@@ -1,0 +1,9 @@
+---
+
+- block:
+    - name: Check variables
+      assert:
+        that:
+          - deconz_platform in deconz_platforms
+          - deconz_role_action in deconz_role_actions
+  tags: always

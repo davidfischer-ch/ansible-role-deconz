@@ -1,0 +1,23 @@
+---
+
+dependencies:
+  - role: daemon
+    daemon_user: '{{ deconz_daemon_user }}'
+    daemon_group: '{{ deconz_daemon_group }}'
+    daemon_groups: dialout
+    daemon_user_id: '{{ deconz_daemon_user_id }}'
+    daemon_group_id: '{{ deconz_daemon_group_id }}'
+    daemon_directory: '{{ deconz_app_directory }}'
+    tags: [deconz, dependencies]
+    when: deconz_role_action == 'setup'
+
+  - role: ufw
+    ufw_rules: '{{ deconz_ufw_rules }}'
+    tags: [deconz, dependencies]
+    when: deconz_ufw_rules|length > 0
+
+  # - role: logrotate
+  #   logrotate_log_rotations: '{{ deconz_log_rotations }}'
+  #   logrotate_role_action: setup
+  #   tags: [deconz, dependencies]
+  #   when: deconz_role_action == 'setup' and deconz_log_rotations|length > 0

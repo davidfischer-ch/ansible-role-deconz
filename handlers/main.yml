@@ -1,0 +1,12 @@
+---
+
+- name: restart deconz
+  service:
+    name: deconz
+    state: restarted
+  become: yes
+
+- name: reload systemd
+  systemd:
+    daemon-reload: yes
+  become: yes

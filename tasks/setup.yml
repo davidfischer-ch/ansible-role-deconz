@@ -1,0 +1,60 @@
+---
+
+- block:
+    - name: Create deCONZ directories
+      file:
+        name: '{{ item.name }}'
+        owner: '{{ deconz_daemon_user }}'
+        group: '{{ deconz_daemon_group }}'
+        mode: '{{ item.mode }}'
+        state: directory
+      loop:
+        - { name: '{{ deconz_app_directory }}', mode: 755 }
+        #- { name: '{{ deconz_log_directory }}', mode: 755 }
+  become: yes
+  tags: config
+
+- block:
+    #   # TODO: This can be removed once focal is officially supported
+    # - name: Include release specific variables
+    #   include_vars: ubuntu-focal.yml
+    #   when:
+    #     ansible_distribution_release == 'focal'
+
+    - name: Registry deCONZ apt key
+      apt_key:
+        url: '{{ deconz_gpg_url }}'
+        id: '{{ deconz_gpg_id }}'
+        state: present
+
+    - name: Install deCONZ apt repository
+      apt_repository:
+        repo: 'deb [arch=amd64] {{ deconz_repo_url }} {{ deconz_repo_distribution }} main'
+        filename: ansible_role_deconz
+        state: present
+        update_cache: yes
+
+    - name: Install deCONZ
+      apt:
+        name: deconz
+        state: present
+  become: yes
+  tags: packages
+
+- name: Configure deCONZ service
+  template:
+    src: deconz.service.j2
+    dest: /etc/systemd/system/deconz.service
+  notify:
+    # - reload systemd
+    - restart deconz
+  become: yes
+  tags: config
+
+- name: Start deCONZ service
+  service:
+    name: deconz
+    enabled: yes
+    state: started
+  become: yes
+  tags: services

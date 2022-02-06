@@ -1,0 +1,5 @@
+deconz_platforms:
+  - minimal
+
+deconz_role_actions:
+  - setup

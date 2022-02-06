@@ -1,0 +1,27 @@
+# Packages
+deconz_gpg_id: 43D8720A
+deconz_gpg_url: http://phoscon.de/apt/deconz.pub.key
+deconz_repo_distribution: '{{ ansible_distribution_release }}'
+deconz_repo_url: http://phoscon.de/apt/deconz
+
+# Instance Parameters
+deconz_daemon_group: '{{ deconz_daemon_user }}'
+deconz_daemon_group_id: '{{ omit }}'
+deconz_daemon_user: deconz
+deconz_daemon_user_id: '{{ omit }}'
+deconz_platform: minimal
+
+# Directories
+deconz_app_directory: /var/app/deconz
+# deconz_log_directory: '/var/log/{{ deconz_instance_name }}'
+
+# Networking
+# deconz_bind_address: 0.0.0.0
+deconz_interface: null
+deconz_port: 58000
+deconz_ufw_rules:
+  - direction: in
+    interface: '{{ deconz_interface or omit }}'
+    port: '{{ deconz_port }}'
+    proto: tcp
+    rule: allow

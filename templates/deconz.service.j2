@@ -1,0 +1,13 @@
+[Unit]
+Description=deCONZ: ZigBee gateway -- REST API
+Wants=deconz-init.service deconz-update.service
+
+[Service]
+User={{ deconz_daemon_user }}
+ExecStart=/usr/bin/deCONZ -platform {{ deconz_platform }} --http-port={{ deconz_port|int }}
+Restart=on-failure
+RestartSec=30
+AmbientCapabilities=CAP_NET_BIND_SERVICE CAP_KILL CAP_SYS_BOOT CAP_SYS_TIME
+
+[Install]
+WantedBy=multi-user.target
