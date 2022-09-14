@@ -9,8 +9,8 @@
         mode: '{{ item.mode }}'
         state: directory
       loop:
-        - { name: '{{ deconz_app_directory }}', mode: 755 }
-        #- { name: '{{ deconz_log_directory }}', mode: 755 }
+        - { name: '{{ deconz_app_directory }}', mode: 0755 }
+        #- { name: '{{ deconz_log_directory }}', mode: 0755 }
   become: yes
   tags: config
 
