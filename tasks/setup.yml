@@ -2,7 +2,7 @@
 
 - block:
     - name: Create deCONZ directories
-      file:
+      ansible.builtin.file:
         name: '{{ item.name }}'
         owner: '{{ deconz_daemon_user }}'
         group: '{{ deconz_daemon_group }}'
@@ -11,7 +11,7 @@
       loop:
         - { name: '{{ deconz_app_directory }}', mode: '755' }
         #- { name: '{{ deconz_log_directory }}', mode: '755' }
-  become: yes
+  become: '{{ do_become }}'
   tags: config
 
 - block:
@@ -22,39 +22,41 @@
     #     ansible_distribution_release == 'focal'
 
     - name: Registry deCONZ apt key
-      apt_key:
+      ansible.builtin.apt_key:
         url: '{{ deconz_gpg_url }}'
         id: '{{ deconz_gpg_id }}'
         state: present
 
     - name: Install deCONZ apt repository
-      apt_repository:
+      ansible.builtin.apt_repository:
         repo: 'deb [arch=amd64] {{ deconz_repo_url }} {{ deconz_repo_distribution }} main'
         filename: ansible_role_deconz
         state: present
-        update_cache: yes
+        update_cache: true
 
     - name: Install deCONZ
-      apt:
+      ansible.builtin.apt:
         name: deconz
         state: present
-  become: yes
+  become: '{{ do_become }}'
   tags: packages
 
 - name: Configure deCONZ service
-  template:
+  ansible.builtin.template:
     src: deconz.service.j2
     dest: /etc/systemd/system/deconz.service
   notify:
     # - reload systemd
     - restart deconz
-  become: yes
+  become: '{{ do_become }}'
   tags: config
 
 - name: Start deCONZ service
-  service:
+  ansible.builtin.service:
     name: deconz
-    enabled: yes
+    enabled: true
     state: started
-  become: yes
+  become: '{{ do_become }}'
   tags: services
+
+...

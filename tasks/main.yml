@@ -6,3 +6,5 @@
     - import_tasks: facts.yml
     - import_tasks: '{{ deconz_role_action }}.yml'
   tags: deconz
+
+...

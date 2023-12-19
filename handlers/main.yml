@@ -1,12 +1,14 @@
 ---
 
 - name: restart deconz
-  service:
+  ansible.builtin.service:
     name: deconz
     state: restarted
-  become: yes
+  become: '{{ do_become }}'
 
 - name: reload systemd
-  systemd:
-    daemon-reload: yes
-  become: yes
+  ansible.builtin.systemd:
+    daemon-reload: true
+  become: '{{ do_become }}'
+
+...

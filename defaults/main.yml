@@ -1,3 +1,7 @@
+---
+
+do_become: true
+
 # Packages
 deconz_gpg_id: 43D8720A
 deconz_gpg_url: http://phoscon.de/apt/deconz.pub.key
@@ -25,3 +29,5 @@ deconz_ufw_rules:
     port: '{{ deconz_port }}'
     proto: tcp
     rule: allow
+
+...

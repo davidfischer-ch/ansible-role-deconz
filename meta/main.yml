@@ -21,3 +21,5 @@ dependencies:
   #   logrotate_role_action: setup
   #   tags: [deconz, dependencies]
   #   when: deconz_role_action == 'setup' and deconz_log_rotations|length > 0
+
+...
